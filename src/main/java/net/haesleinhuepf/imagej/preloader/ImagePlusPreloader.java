@@ -19,7 +19,7 @@ public class ImagePlusPreloader {
         synchronized (loaderLock) {
             if (nextLoadedImageFileName.compareTo(currentFileName) != 0) {
                 // images was not loaded yet
-                if (loader == null) { // the image has never been requested before
+                if (loader == null || this.currentFileName.compareTo(currentFileName) != 0) { // the image has never been requested before
                     currentImage = IJ.openImage(currentFileName);
                     this.currentFileName = currentFileName;
                 } else { // if the loader was initialized earlier, wait for it to finish
@@ -40,15 +40,12 @@ public class ImagePlusPreloader {
     }
 
     private ImagePlus sleepload(String currentFileName, String nextFileName) {
-        IJ.log("Sleepload: loader active " + loader.isAlive());
-
         try {
             loader.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
         }
-
         return load(currentFileName, nextFileName);
     }
 
