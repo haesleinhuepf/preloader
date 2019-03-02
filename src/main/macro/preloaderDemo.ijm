@@ -26,22 +26,26 @@ fileList2 = newArray(
 // load images and process them sequentially
 time = getTime();
 for (i = 0; i < lengthOf(fileList1); i++) {
+	run("Close All");
+
 	filename = fileList1[i];
 	loadStartTime = getTime();
 	open(filename);
 	deltaTime = getTime() - loadStartTime;
 	print("Loading a single file took " + deltaTime + " msec");
 
+	// process the image
 	run("Mean 3D...", "x=3 y=3 z=3");
 }
 deltaTime = getTime() - time;
 print("Loading " + lengthOf(fileList1) + " files and processing them took " + deltaTime + " msec");
 
-
 // -----------------------------------------------
 // load images with preloading while processing them
 time = getTime();
 for (i = 0; i < lengthOf(fileList2); i++) {
+	run("Close All");
+	
 	filename = fileList2[i];
 	if (i < lengthOf(fileList2) - 1) {
 		nextFilename = fileList2[i + 1];
@@ -52,6 +56,7 @@ for (i = 0; i < lengthOf(fileList2); i++) {
 	deltaTime = getTime() - loadStartTime;
 	print("Loading a single file with preloading took " + deltaTime + " msec");
 
+	// process the image
 	run("Mean 3D...", "x=3 y=3 z=3");
 }
 deltaTime = getTime() - time;
